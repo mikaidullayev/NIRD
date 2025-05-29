@@ -1,0 +1,60 @@
+import pandas as pd
+import re
+
+# Basic transliteration rules
+translit_rules = [
+    ("ch", "ч"), ("sh", "ш"), ("ph", "ф"), ("th", "з"), ("qu", "кв"), ("ck", "к"),
+    ("a", "а"), ("b", "б"), ("c", "к"), ("d", "д"), ("e", "е"), ("f", "ф"),
+    ("g", "г"), ("h", "х"), ("i", "и"), ("j", "дж"), ("k", "к"), ("l", "л"),
+    ("m", "м"), ("n", "н"), ("o", "о"), ("p", "п"), ("q", "к"), ("r", "р"),
+    ("s", "с"), ("t", "т"), ("u", "у"), ("v", "в"), ("w", "в"), ("x", "кс"),
+    ("y", "и"), ("z", "з")
+]
+
+def transliterate_word(word):
+    word = word.lower()
+    for latin, cyrillic in translit_rules:
+        word = re.sub(latin, cyrillic, word)
+    return word
+
+# Load Excel file
+df = pd.read_excel("your_file.xlsx")  # Replace with your filename
+df["Cyrillic"] = df["English"].apply(transliterate_word)  # Assuming the column is named 'English'
+
+# Save back to Excel
+df.to_excel("transliterated_output.xlsx", index=False)
+
+####
+#| English        | Cyrillic |
+#| -------------- | -------- |
+#| a              | а        |
+#| b              | б        |
+#| c (before e/i) | с        |
+#| c (otherwise)  | к        |
+#| ch             | ч        |
+#| d              | д        |
+#| e              | э / е    |
+#| f              | ф        |
+#| g              | г        |
+#| h              | х        |
+#| i              | и        |
+#| j              | дж       |
+#| k              | к        |
+#| l              | л        |
+#| m              | м        |
+#| n              | н        |
+#| o              | о        |
+#| p              | п        |
+#| ph             | ф        |
+#| qu             | кв       |
+#| r              | р        |
+#| s              | с        |
+#| sh             | ш        |
+#| t              | т        |
+#| th             | з / с    |
+#| u              | у        |
+#| v              | в        |
+#| w              | в        |
+#| x              | кс       |
+#| y              | й / и    |
+#| z              | з        |
